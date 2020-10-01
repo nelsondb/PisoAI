@@ -36,9 +36,19 @@ for (i in 1:length(CRUfiles)) {
 
 
 #EOBS
-#convert from daily to monthly data using climate data operators (CDO) in a bash shell. No need to crop. Convert to rts when reading in
-#https://code.mpimet.mpg.de/projects/cdo
-#store files pred_data_out/EOBS
+#convert from daily to monthly data using CDO in a bash shell. https://code.mpimet.mpg.de/projects/cdo
+#this assumes that CDO is already installed on the system. 
+#This requires a mac user to install macports, xcode, and then cdo in that order, outside of R
+#there is no need to crop these data because they are already Europe-only. 
+#Due to the nature of the conversion, it's easier to convert from netcdf to rts when the data are read in below
+setwd(pred_data_out) #this is required here because system commands will not accept spaces in filepath names 
+EOBSfiles<-list.files(paste0(pred_src_data,"EOBS"),full.names=TRUE)
+EOBSnames<-list.files(paste0(pred_src_data,"EOBS"),full.names=FALSE)
+EOBSnames<-paste0("EOBS.",toupper(substr(EOBSnames,1,2)),".mo.nc")
+i<-NA
+for (i in 1:length(EOBSfiles)) {
+  system(paste0("cdo monmean ",EOBSfiles[i], " EOBS/",EOBSnames[i]))
+}
 
 #NCEP
 NCEPfiles<-list.files(paste0(pred_src_data,"NCEP/"),full.names=TRUE)
