@@ -37,7 +37,7 @@ The following datasets have to be downloaded from data providers. The required f
 
 
 #### Tools
-* [CDO Tools](https://code.mpimet.mpg.de/projects/cdo/) CDO (Climate Data Operators) is a collection of command-line Operators to manipulate and analyze climate and forecast model Data.
+* [CDO Tools](https://code.mpimet.mpg.de/projects/cdo/) CDO (Climate Data Operators) is a collection of command-line operators to manipulate and analyze climate and forecast model data.
 
 #### R libraries
 
