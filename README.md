@@ -1,7 +1,7 @@
-# PisoAI
-[PisoAI](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website") is a tool for predicting monthly time series of oxygen and hydrogen isotope values of precipitation that uses a machine learning model trained on geographic and climate data. Point predictions based on the model can be accessed here using the web interface [https://isotope.bot.unibas.ch/PisoAI/](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website")
+# Piso.AI <img src='Piso.AI.logo.png' align="right" height="138.5" />
+[Piso.AI](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website") is a tool for predicting monthly time series of oxygen and hydrogen isotope values of precipitation that uses a machine learning model trained on geographic and climate data. Point predictions based on the model can be accessed here using the web interface [https://isotope.bot.unibas.ch/PisoAI/](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website")
 
-This repository contains all of the R code detailing the processing of input data and training of model used for the creation of the operational [PisoAI](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website") model/dataset, to be released as:
+This repository contains all of the R code detailing the processing of input data and training of model used for the creation of the operational [Piso.AI](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website") model/dataset, to be released as:
 
 ```
 Nelson DB, Basler D, Kahmen A (2020) Accurate monthly precipitation isotope spatial timeseries predictions with machine learning. Ready for submission.
@@ -41,8 +41,8 @@ The following datasets have to be downloaded from data providers. The required f
 
 #### R libraries
 
-The required r libraries are listed below. The snippet can be used to install missing libraries. 
-```
+The required R libraries are listed below. The snippet can be used to install missing libraries. 
+```R
 list.of.packages <- c("abind","caret","data.table","dplyr","ff","ggplot2","lubridate","ncdf4","raster","reshape2","rsample","rts","xgboost")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
