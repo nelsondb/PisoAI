@@ -103,11 +103,17 @@ writeRaster(DEM,filename = paste0(pred_data_out,"EurC_DEM.nc"),
 
 
 #climate indices
-TELE<-read.csv(paste0(pred_src_data,"TELE/TELE.csv"))
-TELE$day<-15
-TELE$Date<-as.Date(paste(TELE$year,TELE$month,TELE$day,sep="-"))
-i<-dplyr::select(TELE,c(year,month,Date,NAO,EA,WP,PNA,EA.WR,SCA,POL))
-write.csv(i, file=paste0(pred_data_out,"TELE.csv"))
+telefn<-file.path(pred_src_data,"TELE/tele_index.nh")
+TELEheader<-gsub('/','.',gsub(' ','',read.fwf(telefn,width=c(4,3,7,6,6,6,6,6,6,6,6,6,10),skip=17,n=1,stringsAsFactor=FALSE)))
+TELEheader[1:2]<-c('year','month')
+TELE<-read.fwf(telefn,width=c(4,3,7,6,6,6,6,6,6,6,6,6,7),skip=19,stringsAsFactor=FALSE)
+TELE<-sapply(1:ncol(TELE),FUN=function (i) TELE[,i]<-as.numeric(TELE[,i]))
+TELE[TELE==-99.90]<-NA
+TELE<-data.frame(TELE)
+names(TELE)<-TELEheader
+TELE<-TELE[,!names(TELE)  %in% c('EP.NP','TNH','PT','Expl.Var')]
+TELE$Date<-sprintf("%i-%02i-15",TELE$year,TELE$month)
+write.csv(TELE[,c(1,2,10,3:9)], file=file.path(pred_data_out,"TELE.csv"))
 
 
 #Derived variables
