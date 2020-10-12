@@ -4,7 +4,7 @@
 This repository contains all of the R code detailing the processing of input data and training of model used for the creation of the operational [Piso.AI](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website") model/dataset, to be released as:
 
 ```
-Nelson DB, Basler D, Kahmen A (2020) Accurate monthly precipitation isotope spatial timeseries predictions with machine learning. Ready for submission.
+Nelson DB, Basler D, Kahmen A (2020) Accurate monthly precipitation isotope spatial timeseries predictions with machine learning. Submitted.
 ```
 
 ## Overview of R files
