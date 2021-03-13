@@ -8,7 +8,7 @@ library(reshape2)
 
 
 
-fuzz=0.5 #parameter to be used with the fuzzy.extract function - the amount of shift to use (in degreees Longitude/Latitude) to look for an alternate pixel in each of the 4 cardinal directions
+fuzz=0.5 #parameter to be used with the fuzzy.extract function - the amount of shift to use (in degrees Longitude/Latitude) to look for an alternate pixel in each of the 4 cardinal directions
 #directory for csv
 output.directory<-output.directory.path
 #filename for csv
@@ -31,7 +31,7 @@ df.points$Site<-as.character(df.points$Site)
 ex.points<-SpatialPoints(df.points[,1:2])
 
 
-###BE CARFEUL TO ENSRURE THAT THE ENVIRONMENT WAS EMPTY WHEN STARTING THE SCRIPT TO READ IN SPATIAL DATA###
+###BE CARFEUL TO ENSURE THAT THE ENVIRONMENT WAS EMPTY WHEN STARTING THE SCRIPT TO READ IN SPATIAL DATA###
 vars.class<-NA
 vars.name<-ls()
 vars.class<-eapply(.GlobalEnv,class)
@@ -88,6 +88,15 @@ for (i in 1:length(NCEP.rts$object)) {
 site.data.TELE<-site.data.NCEPTS
 site.data.TELE<-merge(site.data.TELE,TELE,all.x=T)
 
+KOEP<-df.points
+KOEP$ID<-extract(koep.clim,ex.points,method="simple")
+KOEP<-merge(KOEP,koep.cat,all.x=T)
+KOEP<-subset(KOEP,select=-c(ID)) 
 
-write.csv(site.data.TELE, file=paste0(output.directory,output.filename,".csv"))
 
+site.data.KOEP<-site.data.TELE
+site.data.KOEP<-merge(site.data.KOEP,KOEP,all.x=T)
+
+str(site.data.KOEP,list=length(site.data.KOEP))
+
+write.csv(site.data.KOEP, file=paste0(output.directory,output.filename,".csv"))

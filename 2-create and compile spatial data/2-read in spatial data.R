@@ -48,3 +48,6 @@ i<-NA
 for (i in 1:length(NCEPfiles)) {assign(NCEPnames[i],rts::read.rts(NCEPfiles[i]))}
 
 TELE<-read.csv(paste0(pred_data,"TELE.csv"),row.names=1)
+
+koep.clim <- raster(paste0(pred_data,"koepclim/koepclim.grd"))
+koep.cat<-as.data.frame(read.csv(paste0(pred_data,"koepclim/koep.cat.csv")))

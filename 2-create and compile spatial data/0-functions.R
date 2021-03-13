@@ -1,3 +1,4 @@
+
 library(raster)
 library(rts)
 library(dplyr)
@@ -12,7 +13,7 @@ simple.extract<-function(x, #a rts object to extract
   i<-raster::extract(x,ex.points,time.pointers) %>% as.data.frame()
   colnames(i)<-df.points[,3]
   i$Date<-rownames(i)
-  i<-melt(i,id.vars = "Date",measure.vars = colnames(i[,-ncol(i)]))
+  i<-reshape2::melt(i,id.vars = "Date",measure.vars = colnames(i[,-ncol(i)]))
   colnames(i)<-c(colnames(i)[1],colnames(df.points)[3],paste(deparse(substitute(x))))
   i[,1]<-as.Date(i[,1])
   i[,2]<-as.character(i[,2])
@@ -20,14 +21,14 @@ simple.extract<-function(x, #a rts object to extract
 }
 
 simple.extract.single<-function(x, #a rts object to extract
-                         ex.points, #a SpatialPoints object
-                         df.points) { #a df with columns "Longitude","Latitude", and "Site" - 1st 2 are numeric and 3rd is character) 
+                                ex.points, #a SpatialPoints object
+                                df.points) { #a df with columns "Longitude","Latitude", and "Site" - 1st 2 are numeric and 3rd is character) 
   time.pointers<-data.frame(x@time)
   time.pointers<-as.Date(rownames(time.pointers))
   i<-raster::extract(x,ex.points,time.pointers) %>% as.data.frame()
   colnames(i)<-df.points[,3]
   i$Date<-rownames(i)
-  i<-melt(i,id.vars = "Date",measure.vars = colnames(i[-ncol(i)]))
+  i<-reshape2::melt(i,id.vars = "Date",measure.vars = colnames(i[-ncol(i)]))
   colnames(i)<-c(colnames(i)[1],colnames(df.points)[3],paste(deparse(substitute(x))))
   i[,1]<-as.Date(i[,1])
   i[,2]<-as.character(i[,2])
@@ -39,18 +40,18 @@ fuzzy.extract<-function(x, #a rts object to extract
                         ex.points, #a SpatialPoints object
                         df.points, #a df with columns "Longitude","Latitude", and "Site" - 1st 2 are numeric and 3rd is character
                         fuzz=0.5 #the amount of shift to use (in degreees Longitude/Latitude) to look for an alternate pixel in each of the 4 cardinal directions
-                        ) { 
+) { 
   time.pointers<-data.frame(x@time)
   time.pointers<-as.Date(rownames(time.pointers))
   i<-raster::extract(x,ex.points,time.pointers)
   i<-as.data.frame(i)
   colnames(i)<-df.points[,3]
   i$Date<-rownames(i)
-  i<-melt(i,id.vars = "Date",measure.vars = colnames(i[,-ncol(i)]))
+  i<-reshape2::melt(i,id.vars = "Date",measure.vars = colnames(i[,-ncol(i)]))
   colnames(i)<-c(colnames(i)[1],colnames(df.points)[3],paste(deparse(substitute(x))))
   i[,1]<-as.Date(i[,1])
   i[,2]<-as.character(i[,2])
-
+  
   df.points.Ltp1<-df.points
   df.points.Ltp1$Latitude<-df.points.Ltp1$Latitude+fuzz
   pts.Ltp1<-SpatialPoints(df.points.Ltp1[,1:2])
@@ -58,7 +59,7 @@ fuzzy.extract<-function(x, #a rts object to extract
   i.Ltp1<-as.data.frame(i.Ltp1)
   colnames(i.Ltp1)<-df.points[,3]
   i.Ltp1$Date<-rownames(i.Ltp1)
-  i.Ltp1<-melt(i.Ltp1,id.vars = "Date",measure.vars = colnames(i.Ltp1[,-ncol(i.Ltp1)]))
+  i.Ltp1<-reshape2::melt(i.Ltp1,id.vars = "Date",measure.vars = colnames(i.Ltp1[,-ncol(i.Ltp1)]))
   colnames(i.Ltp1)<-c(colnames(i.Ltp1)[1],colnames(df.points)[3],paste(deparse(substitute(x)),"Ltp1",sep="."))
   i.Ltp1[,1]<-as.Date(i.Ltp1[,1])
   i.Ltp1[,2]<-as.character(i.Ltp1[,2])
@@ -72,7 +73,7 @@ fuzzy.extract<-function(x, #a rts object to extract
   i.Ltm1<-as.data.frame(i.Ltm1)
   colnames(i.Ltm1)<-df.points[,3]
   i.Ltm1$Date<-rownames(i.Ltm1)
-  i.Ltm1<-melt(i.Ltm1,id.vars = "Date",measure.vars = colnames(i.Ltm1[,-ncol(i.Ltm1)]))
+  i.Ltm1<-reshape2::melt(i.Ltm1,id.vars = "Date",measure.vars = colnames(i.Ltm1[,-ncol(i.Ltm1)]))
   colnames(i.Ltm1)<-c(colnames(i.Ltm1)[1],colnames(df.points)[3],paste(deparse(substitute(x)),"Ltm1",sep="."))
   i.Ltm1[,1]<-as.Date(i.Ltm1[,1])
   i.Ltm1[,2]<-as.character(i.Ltm1[,2])
@@ -86,7 +87,7 @@ fuzzy.extract<-function(x, #a rts object to extract
   i.Lop1<-as.data.frame(i.Lop1)
   colnames(i.Lop1)<-df.points[,3]
   i.Lop1$Date<-rownames(i.Lop1)
-  i.Lop1<-melt(i.Lop1,id.vars = "Date",measure.vars = colnames(i.Lop1[,-ncol(i.Lop1)]))
+  i.Lop1<-reshape2::melt(i.Lop1,id.vars = "Date",measure.vars = colnames(i.Lop1[,-ncol(i.Lop1)]))
   colnames(i.Lop1)<-c(colnames(i.Lop1)[1],colnames(df.points)[3],paste(deparse(substitute(x)),"Lop1",sep="."))
   i.Lop1[,1]<-as.Date(i.Lop1[,1])
   i.Lop1[,2]<-as.character(i.Lop1[,2])
@@ -100,7 +101,7 @@ fuzzy.extract<-function(x, #a rts object to extract
   i.Lom1<-as.data.frame(i.Lom1)
   colnames(i.Lom1)<-df.points[,3]
   i.Lom1$Date<-rownames(i.Lom1)
-  i.Lom1<-melt(i.Lom1,id.vars = "Date",measure.vars = colnames(i.Lom1[,-ncol(i.Lom1)]))
+  i.Lom1<-reshape2::melt(i.Lom1,id.vars = "Date",measure.vars = colnames(i.Lom1[,-ncol(i.Lom1)]))
   colnames(i.Lom1)<-c(colnames(i.Lom1)[1],colnames(df.points)[3],paste(deparse(substitute(x)),"Lom1",sep="."))
   i.Lom1[,1]<-as.Date(i.Lom1[,1])
   i.Lom1[,2]<-as.character(i.Lom1[,2])
@@ -112,9 +113,9 @@ fuzzy.extract<-function(x, #a rts object to extract
 
 
 fuzzy.extract.single.point<-function(x, #a rts object to extract
-                        ex.points, #a SpatialPoints object
-                        df.points, #a df with columns "Longitude","Latitude", and "Site" - 1st 2 are numeric and 3rd is character
-                        fuzz=0.5 #the amount of shift to use (in degreees Longitude/Latitude) to look for an alternate pixel in each of the 4 cardinal directions
+                                     ex.points, #a SpatialPoints object
+                                     df.points, #a df with columns "Longitude","Latitude", and "Site" - 1st 2 are numeric and 3rd is character
+                                     fuzz=0.5 #the amount of shift to use (in degreees Longitude/Latitude) to look for an alternate pixel in each of the 4 cardinal directions
 ) { 
   time.pointers<-data.frame(x@time)
   time.pointers<-as.Date(rownames(time.pointers))
@@ -122,7 +123,7 @@ fuzzy.extract.single.point<-function(x, #a rts object to extract
   i<-as.data.frame(i)
   colnames(i)<-df.points[,3]
   i$Date<-rownames(i)
-  i<-melt(i,id.vars = "Date",measure.vars = colnames(i[-ncol(i)]))
+  i<-reshape2::melt(i,id.vars = "Date",measure.vars = colnames(i[-ncol(i)]))
   colnames(i)<-c(colnames(i)[1],colnames(df.points)[3],paste(deparse(substitute(x))))
   i[,1]<-as.Date(i[,1])
   i[,2]<-as.character(i[,2])
@@ -130,12 +131,11 @@ fuzzy.extract.single.point<-function(x, #a rts object to extract
   df.points.Ltp1<-df.points
   df.points.Ltp1$Latitude<-df.points.Ltp1$Latitude+fuzz
   pts.Ltp1<-SpatialPoints(df.points.Ltp1[,1:2])
-  #detach("package:tidyverse", unload=TRUE) #there is a conflict with tidyverse. detatch if needed
   i.Ltp1<-raster::extract(x,pts.Ltp1,time.pointers)
   i.Ltp1<-as.data.frame(i.Ltp1)
   colnames(i.Ltp1)<-df.points[,3]
   i.Ltp1$Date<-rownames(i.Ltp1)
-  i.Ltp1<-melt(i.Ltp1,id.vars = "Date",measure.vars = colnames(i.Ltp1[-ncol(i.Ltp1)]))
+  i.Ltp1<-reshape2::melt(i.Ltp1,id.vars = "Date",measure.vars = colnames(i.Ltp1[-ncol(i.Ltp1)]))
   colnames(i.Ltp1)<-c(colnames(i.Ltp1)[1],colnames(df.points)[3],paste(deparse(substitute(x)),"Ltp1",sep="."))
   i.Ltp1[,1]<-as.Date(i.Ltp1[,1])
   i.Ltp1[,2]<-as.character(i.Ltp1[,2])
@@ -149,7 +149,7 @@ fuzzy.extract.single.point<-function(x, #a rts object to extract
   i.Ltm1<-as.data.frame(i.Ltm1)
   colnames(i.Ltm1)<-df.points[,3]
   i.Ltm1$Date<-rownames(i.Ltm1)
-  i.Ltm1<-melt(i.Ltm1,id.vars = "Date",measure.vars = colnames(i.Ltm1[-ncol(i.Ltm1)]))
+  i.Ltm1<-reshape2::melt(i.Ltm1,id.vars = "Date",measure.vars = colnames(i.Ltm1[-ncol(i.Ltm1)]))
   colnames(i.Ltm1)<-c(colnames(i.Ltm1)[1],colnames(df.points)[3],paste(deparse(substitute(x)),"Ltm1",sep="."))
   i.Ltm1[,1]<-as.Date(i.Ltm1[,1])
   i.Ltm1[,2]<-as.character(i.Ltm1[,2])
@@ -163,7 +163,7 @@ fuzzy.extract.single.point<-function(x, #a rts object to extract
   i.Lop1<-as.data.frame(i.Lop1)
   colnames(i.Lop1)<-df.points[,3]
   i.Lop1$Date<-rownames(i.Lop1)
-  i.Lop1<-melt(i.Lop1,id.vars = "Date",measure.vars = colnames(i.Lop1[-ncol(i.Lop1)]))
+  i.Lop1<-reshape2::melt(i.Lop1,id.vars = "Date",measure.vars = colnames(i.Lop1[-ncol(i.Lop1)]))
   colnames(i.Lop1)<-c(colnames(i.Lop1)[1],colnames(df.points)[3],paste(deparse(substitute(x)),"Lop1",sep="."))
   i.Lop1[,1]<-as.Date(i.Lop1[,1])
   i.Lop1[,2]<-as.character(i.Lop1[,2])
@@ -177,7 +177,7 @@ fuzzy.extract.single.point<-function(x, #a rts object to extract
   i.Lom1<-as.data.frame(i.Lom1)
   colnames(i.Lom1)<-df.points[,3]
   i.Lom1$Date<-rownames(i.Lom1)
-  i.Lom1<-melt(i.Lom1,id.vars = "Date",measure.vars = colnames(i.Lom1[-ncol(i.Lom1)]))
+  i.Lom1<-reshape2::melt(i.Lom1,id.vars = "Date",measure.vars = colnames(i.Lom1[-ncol(i.Lom1)]))
   colnames(i.Lom1)<-c(colnames(i.Lom1)[1],colnames(df.points)[3],paste(deparse(substitute(x)),"Lom1",sep="."))
   i.Lom1[,1]<-as.Date(i.Lom1[,1])
   i.Lom1[,2]<-as.character(i.Lom1[,2])
@@ -197,9 +197,9 @@ fuzzy.extract.mean<-function(x) { #a fuzzy.extract object
 
 
 fuzzy.extract.single<-function(x, #a rts object to extract
-                        ex.points, #a SpatialPoints object
-                        df.points, #a df with columns "Longitude","Latitude", and "Site" - 1st 2 are numeric and 3rd is character
-                        fuzz=0.5 #the amount of shift to use (in degreees Longitude/Latitude) to look for an alternate pixel in each of the 4 cardinal directions
+                               ex.points, #a SpatialPoints object
+                               df.points, #a df with columns "Longitude","Latitude", and "Site" - 1st 2 are numeric and 3rd is character
+                               fuzz=0.5 #the amount of shift to use (in degreees Longitude/Latitude) to look for an alternate pixel in each of the 4 cardinal directions
 ) { #the global name of the source data, typically "EOBS"
   i<-raster::extract(x,ex.points,method="bilinear")%>%cbind(df.points)
   colnames(i)[1]<-deparse(substitute(x))

@@ -12,6 +12,7 @@ library(dplyr)
 #Global terms
 pred_src_data<-pred_src_data_path
 pred_data_out<-pred_data_out_path
+
 e<-extent(-30,60,20,80) #set an initial data extent to reduce file size
 
 #Primary variables
@@ -89,6 +90,7 @@ for (i in 1:length(NCEPfiles)) {
   }
   nc_close(x)
 }
+
 
 
 #DEM
@@ -191,6 +193,24 @@ EOBS.svp <- (1.0007+3.46*EOBS.atp.e@raster/1000000)*(6.1121*exp(17.502*EOBS.TG.m
                                                                 (240.97+EOBS.TG.mo)))
 EOBS.svp<-rts(EOBS.svp,EOBS.t)
 write.rts(EOBS.svp,filename = paste0(pred_data_out,"EOBS/EOBS.svp.rts"),overwrite=TRUE)
+
+
+#Koeppen climate regions
+koep.clim<-raster(paste0(pred_src_data,"KG_1986-2010.grd"))
+crs(koep.clim)<- "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
+# Legend must correspond to all climate classes, insert placeholders
+r0 <- koep.clim[1:32]; koep.clim[1:32] <- seq(1,32,1)
+# Converts raster field to categorical data
+koep.clim <- ratify(koep.clim); rat <- levels(koep.clim)[[1]]
+# Legend is always drawn in alphabetic order
+rat$climate <- c('Af', 'Am', 'As', 'Aw', 'BSh', 'BSk', 'BWh', 'BWk', 'Cfa', 'Cfb','Cfc', 'Csa', 'Csb', 'Csc', 'Cwa','Cwb', 'Cwc', 'Dfa', 'Dfb', 'Dfc','Dfd', 'Dsa', 'Dsb', 'Dsc', 'Dsd','Dwa', 'Dwb', 'Dwc', 'Dwd', 'EF','ET', 'Ocean')
+# Remove the placeholders
+koep.clim[1:32] <- r0; levels(koep.clim) <- rat
+koep.clim <- crop(koep.clim, e)
+dir.create(paste0(pred_data_out,"koepclim/"))
+writeRaster(koep.clim,filename = paste0(pred_data_out,"koepclim/koepclim"),
+            overwrite=TRUE)
+write.csv(rat,file = paste0(pred_data_out,"koepclim/koep.cat.csv"),row.names = F)
 
 
 
