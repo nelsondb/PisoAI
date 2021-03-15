@@ -60,7 +60,7 @@ writeRaster(CRU.ID_Raster,paste0(getwd(),"/PisoAI_master_data/data/predictors/FF
 
 
 CRU.x.y<-rasterToPoints(CRU.ID_Raster)[,1:2]
-colnames(CRU.x.y)<-c("Latitude","Longitude")
+colnames(CRU.x.y)<-c("Longitude","Latitude")
 CRU.coords<-paste(CRU.x.y[,1],CRU.x.y[,2],sep="_")
 CRU.t<-x@time
 CRU.t<-seq(time(CRU.t[1]),time(CRU.t[length(CRU.t)]), by="month")
@@ -71,6 +71,7 @@ for(i in 1:length(CRU.var)) {
   y<-get(as.character(CRU.var[i]))
   if (class(y)=="RasterLayer") {
     y<-cbind(xyFromCell(y, 1:ncell(y)), values(y))%>%as.data.frame()
+    y<-y[,3]%>%as.data.frame()
     y[,1:length(CRU.t)]<-y
     y<-as.matrix(y) 
   } else {
@@ -111,7 +112,7 @@ writeRaster(EOBS.ID_Raster,"data/predictors/FFmats/EOBS.ID_Raster",overwrite=T)
 
 
 EOBS.x.y<-rasterToPoints(EOBS.ID_Raster)[,1:2]
-colnames(EOBS.x.y)<-c("Latitude","Longitude")
+colnames(EOBS.x.y)<-c("Longitude","Latitude")
 EOBS.coords<-paste(EOBS.x.y[,1],EOBS.x.y[,2],sep="_")
 
 EOBS.t<-x@time
@@ -228,7 +229,7 @@ writeRaster(NCEP.ID_Raster,"data/predictors/FFmats/NCEP.ID_Raster",overwrite=T)
 
 
 NCEP.x.y<-rasterToPoints(NCEP.ID_Raster)[,1:2]
-colnames(NCEP.x.y)<-c("Latitude","Longitude")
+colnames(NCEP.x.y)<-c("Longitude","Latitude")
 NCEP.coords<-paste(NCEP.x.y[,1],NCEP.x.y[,2],sep="_")
 # NCEP.t<-x@time
 # NCEP.t<-seq(time(NCEP.t[1]),time(NCEP.t[length(NCEP.t)]), by="month")
