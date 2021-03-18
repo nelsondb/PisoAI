@@ -4,20 +4,22 @@
 This repository contains all of the R code detailing the processing of input data and training of model used for the creation of the operational [Piso.AI](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website") model/dataset, to be released as:
 
 ```
-Nelson DB, Basler D, Kahmen A (2020) Accurate monthly precipitation isotope spatial timeseries predictions with machine learning. Submitted.
+Nelson DB, Basler D, Kahmen A (2021) Precipitation Isotope Time Series Predictions from Machine Learning Applied in Europe. Submitted.
 ```
 
-## Overview of R files
-* `0-file_paths.R` Edit this file to adjust paths fro data and other external resources
-* `0-functions.R`  This script defines various functions that are called to extract data from the input predictor variable datasets
-* `1-data_to_rts.R` This file transforms all data from the original format into the used raster time series (rts) format; It also crops the spatial extent to Europe
-* `2-read in spatial data.R` This file reads in the cropped rts files. This method of extracting point data from rasters is slower than the method used in the Piso.AI application, but it allows for bilinear smoothing of the extracted data
-* `3-read in points and extract spatial data.R`
-* `4-d2H_initial_train.R`
-* `5-d18O_initial_train.R`
-* `6-d2H_simplified_train.R`
-* `7-d18O_simplified_train.R`
-* `8-transformFF.R` transform required input predictors to ff pobjects for use with Piso.AI application
+## Overview of R files and folders
+* `0-file_paths.R` Edit this file to adjust paths for data and other external resources
+* `/compile spatial data` This folder contains various functions that are used to extract data from the input predictor variable datasets
+* `1-GNIP-model_dataprep.R`  This script reads all input data and performs the splitting into train, test and watch data
+* `/d2H`, `/d18O`,  `/dxs` These folders contains the code to train the models for d2H,d18O and dxs. Each folder contains three scripts: 
+	* `[target]-1-GNIP-model-train.R` (full model), using the full set of predictor variables
+	* `[target]-2-GNIP-model-train.R` (simplified model) using a restricted set of predictors, i.e. the top 90 % of predictors from all 3 initial models for each target (d2H, d18O and dxs)
+	* `[target]-3-GNIP-model-train.R` (linked model) similar predictors as in model 2, except that the d2H and d18O models 3 also included the model 2 dxs predictions as a predictor, and the dxs model 3 included the model 2 d2H and d18O predictions as predictors. 
+
+* `2-GNIP-model-simplify.R` This script compiles the importance score of model 1 to prepare the training of the simplified model 2
+* `3-GNIP-model-simplify.R` This script compiles the predictions of  model 2 to prepare the training of the linked model 3
+* `4-GNIP-model-compile.R` This the compiles the predictions of model 1, model 1, model 3 and prepares the final output table
+* `5-transformFF.R` transform required input predictors to ff objects for use with Piso.AI online application
 
 Keep in mind that some of the scripts will take a significant amount of time to finish.
 
