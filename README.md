@@ -52,4 +52,4 @@ if(length(new.packages)) install.packages(new.packages)
 
 ## Acknowledgements
 
-This research was supported through the ERC consolidator grant HYDROCARB (ERC-2016-COG- 724750).
+This project has received funding from the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 724750).
