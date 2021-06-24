@@ -1,10 +1,12 @@
 # Piso.AI <img src='Piso.AI.logo.png' align="right" height="138.5" />
 [Piso.AI](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website") is a tool for predicting monthly timeseries of oxygen and hydrogen isotope values of precipitation that uses a machine learning model trained on geographic and climate data. Point predictions based on the model can be accessed here using the web interface [https://isotope.bot.unibas.ch/PisoAI/](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website")
 
-This repository contains all of the R code detailing the processing of input data and training of model used for the creation of the operational [Piso.AI](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website") model/dataset, to be released as:
+This repository contains all of the R code detailing the processing of input data and training of model used for the creation of the operational [Piso.AI](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website") model/dataset, released as:
 
+
+[Nelson DB, Basler D, Kahmen A (2021) Precipitation Isotope Time Series Predictions from Machine Learning Applied in Europe.
+PNAS 2021 Vol. 118 No. 26 e2024107118](https://www.pnas.org/content/118/26/e2024107118 "publication")
 ```
-Nelson DB, Basler D, Kahmen A (2021) Precipitation Isotope Time Series Predictions from Machine Learning Applied in Europe. Submitted.
 ```
 
 ## Overview of R files and folders
@@ -48,6 +50,21 @@ The required R libraries are listed below. The snippet can be used to install mi
 list.of.packages <- c("abind","caret","data.table","dplyr","ff","ggplot2","lubridate","ncdf4","raster","reshape2","rsample","rts","xgboost")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
+```
+
+## Online access to model predictions
+Besides the web interface [https://isotope.bot.unibas.ch/PisoAI/](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website"), point predictions can also be requested through the PisoAI API by providing the following parameters:
+
+* `lat` (required) latitude in decimal degrees
+* `lon`  (required) longitude in decimal degrees
+* `site`   (optional) site identifier (default: `PisoAI site`)
+* `from` (optional) startdate  in YYYY-MM-DD format (default: `1950-01-01`) 
+* `to`      (optional) enddate  in YYYY-MM-DD format (default: `2019-12-31`)
+* `elevation` (optional) elevation in meters (default: elevation extracted from DEM)
+
+Parameters are passed using standard url encoding, e.g. 
+```
+curl http://isotope.bot.unibas.ch/PisoAI/api?site=BSL&lat=45.7&lon=7.6
 ```
 
 ## Acknowledgements
