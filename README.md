@@ -53,7 +53,7 @@ if(length(new.packages)) install.packages(new.packages)
 ```
 
 ## Online access to model predictions
-Besides the web interface [https://isotope.bot.unibas.ch/PisoAI/](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website"), point predictions can also be requested through the PisoAI API by providing the following parameters:
+Besides the web interface [web interface](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI website"), point predictions can also be requested through the PisoAI API by providing the following parameters:
 
 * `lat` (required) latitude in decimal degrees
 * `lon`  (required) longitude in decimal degrees
@@ -64,7 +64,7 @@ Besides the web interface [https://isotope.bot.unibas.ch/PisoAI/](https://isotop
 
 Parameters are passed using standard url encoding, e.g. 
 ```
-curl http://isotope.bot.unibas.ch/PisoAI/api?site=BSL&lat=45.7&lon=7.6
+curl "http://isotope.bot.unibas.ch/PisoAI/api?site=BSL&lat=45.7&lon=7.6"
 ```
 
 ## Acknowledgements
