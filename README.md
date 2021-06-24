@@ -64,7 +64,7 @@ Besides the [web interface](https://isotope.bot.unibas.ch/PisoAI/ "Piso.AI websi
 
 Parameters are passed using standard url encoding, e.g. 
 ```
-curl "http://isotope.bot.unibas.ch/PisoAI/api?site=BSL&lat=45.7&lon=7.6"
+curl "http://isotope.bot.unibas.ch/PisoAI/api?site=BSL&lat=47.5&lon=7.6"
 ```
 
 ## Acknowledgements
